@@ -1,0 +1,115 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import CartaoPeca from '../../components/CartaoPeca.astro';
+import { pilares } from '../../data/site';
+
+const pecas = (await getCollection('pecas')).sort(
+  (a, b) => b.data.data.valueOf() - a.data.data.valueOf()
+);
+---
+
+<Base
+  titulo="Galeria"
+  descricao="As peças da Yada: esculturas, utilitários de mesa e objetos para o ambiente — cerâmica feita à mão em Brasília."
+>
+  <section class="secao">
+    <div class="contentor">
+      <span class="rotulo">Galeria</span>
+      <h1>As peças</h1>
+      <p class="texto-suave texto-medida intro">
+        Cada peça nasce de revelação e é feita à mão, do preparo do barro à
+        queima. Toque em uma peça para conhecer a história por trás dela.
+      </p>
+
+      <div class="filtros" role="group" aria-label="Filtrar por categoria">
+        <button class="filtro ativo" data-filtro="todas">Todas</button>
+        {
+          pilares.map((pilar) => (
+            <button class="filtro" data-filtro={pilar.id}>
+              {pilar.curto}
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="grade-pecas">
+        {pecas.map((peca) => <CartaoPeca peca={peca} />)}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Filtro simples por categoria — sem JS, todas as peças ficam visíveis.
+  const botoes = document.querySelectorAll<HTMLButtonElement>('.filtro');
+  const cartoes = document.querySelectorAll<HTMLElement>('[data-categoria]');
+
+  botoes.forEach((botao) => {
+    botao.addEventListener('click', () => {
+      const filtro = botao.dataset.filtro;
+      botoes.forEach((b) => b.classList.toggle('ativo', b === botao));
+      cartoes.forEach((cartao) => {
+        const mostrar = filtro === 'todas' || cartao.dataset.categoria === filtro;
+        cartao.style.display = mostrar ? '' : 'none';
+      });
+    });
+  });
+</script>
+
+<style>
+  .intro {
+    margin-top: 1rem;
+  }
+
+  .filtros {
+    margin-block: 2.2rem 2.5rem;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .filtro {
+    font-family: var(--fonte-texto);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cor-tinta-suave);
+    background: none;
+    border: 1px solid var(--cor-linha);
+    border-radius: 99px;
+    padding: 0.5rem 1.3rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .filtro:hover {
+    border-color: var(--cor-tinta);
+    color: var(--cor-tinta);
+  }
+
+  .filtro.ativo {
+    background: var(--cor-tinta);
+    border-color: var(--cor-tinta);
+    color: var(--cor-fundo);
+  }
+
+  .grade-pecas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem 1.75rem;
+  }
+
+  @media (max-width: 46rem) {
+    .grade-pecas {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (min-width: 46rem) and (max-width: 64rem) {
+    .grade-pecas {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

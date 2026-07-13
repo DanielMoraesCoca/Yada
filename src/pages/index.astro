@@ -1,0 +1,161 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Marca from '../components/Marca.astro';
+import CartaoPeca from '../components/CartaoPeca.astro';
+import { marca, pilares, caminho } from '../data/site';
+
+const pecas = await getCollection('pecas');
+const destaques = pecas
+  .filter((p) => p.data.destaque)
+  .sort((a, b) => b.data.data.valueOf() - a.data.data.valueOf())
+  .slice(0, 3);
+---
+
+<Base titulo={marca.nome}>
+  <!-- Abertura -->
+  <section class="secao heroi">
+    <div class="contentor centro">
+      <Marca tamanho="grande" />
+      <p class="citacao lema">
+        Contemplar a escultura · Comungar à mesa · Habitar o ambiente
+      </p>
+      <p class="texto-suave sub">
+        Arte profética em cerâmica, feita à mão em Brasília.
+      </p>
+      <div class="acoes">
+        <a class="botao botao-cheio" href={caminho('/galeria/')}>Ver a galeria</a>
+        <a class="botao" href={caminho('/historia/')}>Conhecer a história</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Os três pilares -->
+  <section class="secao secao-alt">
+    <div class="contentor">
+      <span class="rotulo">O que fazemos</span>
+      <h2>Três formas de conhecer</h2>
+      <div class="pilares">
+        {
+          pilares.map((pilar) => (
+            <article class="pilar">
+              <h3>{pilar.titulo}</h3>
+              <p class="texto-suave">{pilar.texto}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Peças em destaque -->
+  <section class="secao">
+    <div class="contentor">
+      <div class="cabeca-galeria">
+        <div>
+          <span class="rotulo">Peças</span>
+          <h2>Em destaque</h2>
+        </div>
+        <a class="ver-todas" href={caminho('/galeria/')}>Ver todas →</a>
+      </div>
+      <div class="grade-pecas">
+        {destaques.map((peca) => <CartaoPeca peca={peca} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Convite -->
+  <section class="secao secao-alt">
+    <div class="contentor centro">
+      <p class="citacao texto-medida convite-texto">
+        “Yada”, no hebraico, é conhecer de perto — não de ouvir falar,
+        mas de conviver. Cada peça é um convite a esse conhecer.
+      </p>
+      <div class="acoes">
+        <a class="botao" href={caminho('/encomendas/')}>Fazer uma encomenda</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .heroi {
+    padding-block: clamp(5rem, 12vw, 9rem);
+  }
+
+  .centro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .lema {
+    margin-top: 2.2rem;
+  }
+
+  .sub {
+    margin-top: 0.9rem;
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+  }
+
+  .acoes {
+    margin-top: 2.6rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .pilares {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+  }
+
+  .pilar h3 {
+    margin-bottom: 0.7rem;
+  }
+
+  .pilar p {
+    font-size: 0.97rem;
+  }
+
+  .cabeca-galeria {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .ver-todas {
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--cor-tinta-suave);
+    white-space: nowrap;
+    padding-bottom: 0.4rem;
+  }
+
+  .grade-pecas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .convite-texto {
+    margin-inline: auto;
+  }
+
+  @media (max-width: 46rem) {
+    .pilares,
+    .grade-pecas {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

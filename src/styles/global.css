@@ -1,0 +1,158 @@
+/* ============================================================
+   Yada — estilos globais
+   Paleta e tipografia derivadas da identidade da marca:
+   creme quente, marrom argila, toque de terracota.
+   ============================================================ */
+
+:root {
+  /* Cores */
+  --cor-fundo: #f6f1e7;
+  --cor-fundo-alt: #efe7d6;
+  --cor-superficie: #fbf8f1;
+  --cor-tinta: #463522;
+  --cor-tinta-suave: #7d6c55;
+  --cor-destaque: #a05437;
+  --cor-linha: #ddd2bc;
+
+  /* Tipografia */
+  --fonte-titulo: 'Cormorant Garamond', 'Georgia', serif;
+  --fonte-texto: 'Karla', 'Helvetica Neue', sans-serif;
+
+  /* Ritmo */
+  --largura-max: 68rem;
+  --espaco-secao: clamp(4rem, 9vw, 7rem);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--cor-fundo);
+  color: var(--cor-tinta);
+  font-family: var(--fonte-texto);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--fonte-titulo);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+}
+
+h1 { font-size: clamp(2.5rem, 6vw, 4rem); }
+h2 { font-size: clamp(1.9rem, 4vw, 2.75rem); }
+h3 { font-size: clamp(1.35rem, 2.5vw, 1.7rem); }
+
+p + p { margin-top: 1em; }
+
+a {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: 0.2em;
+  transition: color 0.2s ease;
+}
+
+a:hover { color: var(--cor-destaque); }
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+::selection {
+  background: var(--cor-destaque);
+  color: var(--cor-fundo);
+}
+
+/* ---------- utilitários de layout ---------- */
+
+.contentor {
+  width: min(100% - 3rem, var(--largura-max));
+  margin-inline: auto;
+}
+
+.secao {
+  padding-block: var(--espaco-secao);
+}
+
+.secao-alt {
+  background: var(--cor-fundo-alt);
+}
+
+/* rótulo pequeno acima de títulos */
+.rotulo {
+  font-family: var(--fonte-texto);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cor-destaque);
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.texto-suave { color: var(--cor-tinta-suave); }
+
+.texto-medida { max-width: 42rem; }
+
+/* botão discreto, tom editorial */
+.botao {
+  display: inline-block;
+  font-family: var(--fonte-texto);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--cor-tinta);
+  border: 1px solid var(--cor-tinta);
+  padding: 0.9rem 2.2rem;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.botao:hover {
+  background: var(--cor-tinta);
+  color: var(--cor-fundo);
+}
+
+.botao-cheio {
+  background: var(--cor-tinta);
+  color: var(--cor-fundo);
+}
+
+.botao-cheio:hover {
+  background: var(--cor-destaque);
+  border-color: var(--cor-destaque);
+  color: var(--cor-fundo);
+}
+
+/* citação contemplativa */
+.citacao {
+  font-family: var(--fonte-titulo);
+  font-style: italic;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  line-height: 1.4;
+  color: var(--cor-tinta);
+}
+
+/* acessibilidade */
+:focus-visible {
+  outline: 2px solid var(--cor-destaque);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; }
+}

@@ -1,0 +1,59 @@
+---
+/**
+ * Marca gráfica da Yada: palavra "YADA" + laço infinito.
+ * Substituir pelo logotipo oficial quando o arquivo vetorial estiver disponível.
+ */
+interface Props {
+  tamanho?: 'normal' | 'grande';
+}
+const { tamanho = 'normal' } = Astro.props;
+---
+
+<span class:list={['marca', tamanho]}>
+  <span class="palavra">YADA</span>
+  <svg
+    class="laco"
+    viewBox="0 0 64 24"
+    fill="none"
+    aria-hidden="true"
+  >
+    <path
+      d="M32 12 C 27 3, 11 3, 11 12 C 11 21, 27 21, 32 12 C 37 3, 53 3, 53 12 C 53 21, 37 21, 32 12"
+      stroke="currentColor"
+      stroke-width="2.4"
+      stroke-linecap="round"
+    ></path>
+  </svg>
+</span>
+
+<style>
+  .marca {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.05em;
+    color: inherit;
+    line-height: 1;
+  }
+
+  .palavra {
+    font-family: var(--fonte-titulo);
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-indent: 0.24em; /* compensa o letter-spacing do último caractere */
+    font-size: 1.5rem;
+  }
+
+  .laco {
+    width: 2.2em;
+    opacity: 0.85;
+  }
+
+  .grande .palavra {
+    font-size: clamp(3rem, 9vw, 5.5rem);
+  }
+
+  .grande .laco {
+    width: 3em;
+  }
+</style>

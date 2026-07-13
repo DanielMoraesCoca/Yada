@@ -1,0 +1,97 @@
+---
+import Marca from './Marca.astro';
+import { marca, navegacao, caminho } from '../data/site';
+
+const ano = new Date().getFullYear();
+---
+
+<footer class="rodape">
+  <div class="contentor grade">
+    <div class="coluna-marca">
+      <Marca />
+      <p class="texto-suave assinatura">
+        {marca.slogan} · Feito à mão em Brasília
+      </p>
+    </div>
+
+    <nav aria-label="Rodapé">
+      <ul class="lista">
+        {
+          navegacao.map((item) => (
+            <li>
+              <a href={caminho(item.caminho)}>{item.rotulo}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <ul class="lista">
+      <li>
+        <a href={marca.instagram} target="_blank" rel="noopener">
+          Instagram {marca.instagramArroba}
+        </a>
+      </li>
+      <li>
+        <a href={marca.whatsapp} target="_blank" rel="noopener">WhatsApp</a>
+      </li>
+      <li>
+        <a href={`mailto:${marca.email}`}>{marca.email}</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="contentor legal">
+    <p class="texto-suave">© {ano} {marca.nome} · {marca.cidade}</p>
+  </div>
+</footer>
+
+<style>
+  .rodape {
+    background: var(--cor-fundo-alt);
+    border-top: 1px solid var(--cor-linha);
+    padding-block: 3.5rem 2rem;
+    margin-top: auto;
+  }
+
+  .grade {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.4fr;
+    gap: 2.5rem;
+  }
+
+  .assinatura {
+    margin-top: 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  .lista {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    font-size: 0.95rem;
+  }
+
+  .lista a {
+    text-decoration: none;
+    color: var(--cor-tinta-suave);
+  }
+
+  .lista a:hover {
+    color: var(--cor-destaque);
+  }
+
+  .legal {
+    margin-top: 3rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--cor-linha);
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 46rem) {
+    .grade {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

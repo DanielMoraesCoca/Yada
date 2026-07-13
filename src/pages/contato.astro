@@ -1,0 +1,107 @@
+---
+import Base from '../layouts/Base.astro';
+import { marca } from '../data/site';
+
+const canais = [
+  {
+    nome: 'Instagram',
+    valor: marca.instagramArroba,
+    link: marca.instagram,
+    texto: 'Acompanhe as peças em produção, os bastidores do ateliê e as novidades.',
+  },
+  {
+    nome: 'WhatsApp',
+    valor: 'Conversar agora',
+    link: marca.whatsapp,
+    texto: 'O caminho mais rápido para perguntas, encomendas e visitas ao ateliê.',
+  },
+  {
+    nome: 'E-mail',
+    valor: marca.email,
+    link: `mailto:${marca.email}`,
+    texto: 'Para propostas, parcerias e conversas mais longas.',
+  },
+];
+---
+
+<Base
+  titulo="Contato"
+  descricao="Fale com a Yada: Instagram, WhatsApp e e-mail. Ateliê de cerâmica em Brasília — DF."
+>
+  <section class="secao">
+    <div class="contentor">
+      <span class="rotulo">Contato</span>
+      <h1>Vamos conversar</h1>
+      <p class="texto-suave texto-medida intro">
+        A Yada é um ateliê, e toda boa peça começa com uma boa conversa.
+        Escolha o canal que preferir.
+      </p>
+
+      <div class="canais">
+        {
+          canais.map((canal) => (
+            <a class="canal" href={canal.link} target="_blank" rel="noopener">
+              <span class="rotulo">{canal.nome}</span>
+              <h2>{canal.valor}</h2>
+              <p class="texto-suave">{canal.texto}</p>
+            </a>
+          ))
+        }
+      </div>
+
+      <p class="texto-suave local">{marca.cidade} · Feito à mão, do barro à queima.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  h1 {
+    margin-top: 0.3rem;
+  }
+
+  .intro {
+    margin-top: 1.2rem;
+  }
+
+  .canais {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+
+  .canal {
+    display: block;
+    text-decoration: none;
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-linha);
+    padding: 2rem 1.8rem;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+
+  .canal:hover {
+    border-color: var(--cor-destaque);
+    transform: translateY(-3px);
+  }
+
+  .canal h2 {
+    font-size: 1.5rem;
+    margin-block: 0.2rem 0.6rem;
+    word-break: break-word;
+  }
+
+  .canal p {
+    font-size: 0.92rem;
+  }
+
+  .local {
+    margin-top: 3rem;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 52rem) {
+    .canais {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

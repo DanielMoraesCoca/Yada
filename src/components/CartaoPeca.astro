@@ -1,0 +1,81 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { pilares, caminho } from '../data/site';
+
+interface Props {
+  peca: CollectionEntry<'pecas'>;
+}
+
+const { peca } = Astro.props;
+const pilar = pilares.find((p) => p.id === peca.data.categoria);
+---
+
+<article class="cartao" data-categoria={peca.data.categoria}>
+  <a href={caminho(`/galeria/${peca.id}/`)}>
+    <div class="moldura">
+      <Image
+        src={peca.data.imagens[0]}
+        alt={`Peça ${peca.data.titulo}`}
+        width={640}
+        height={800}
+        loading="lazy"
+      />
+    </div>
+    <p class="categoria">{pilar?.curto}</p>
+    <h3 class="titulo">{peca.data.titulo}</h3>
+    <p class="descricao texto-suave">{peca.data.descricao}</p>
+  </a>
+</article>
+
+<style>
+  .cartao a {
+    display: block;
+    text-decoration: none;
+  }
+
+  .moldura {
+    overflow: hidden;
+    background: var(--cor-fundo-alt);
+    aspect-ratio: 4 / 5;
+  }
+
+  .moldura img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .cartao a:hover .moldura img {
+    transform: scale(1.03);
+  }
+
+  .categoria {
+    margin-top: 1.1rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cor-destaque);
+  }
+
+  .titulo {
+    margin-top: 0.25rem;
+    font-size: 1.45rem;
+  }
+
+  .cartao a:hover .titulo {
+    color: var(--cor-destaque);
+  }
+
+  .descricao {
+    margin-top: 0.35rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

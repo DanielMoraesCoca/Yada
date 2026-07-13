@@ -1,0 +1,143 @@
+---
+import Base from '../layouts/Base.astro';
+import { marca, caminho } from '../data/site';
+
+const etapas = [
+  {
+    titulo: 'A conversa',
+    texto:
+      'Tudo começa com uma conversa pelo WhatsApp ou Instagram: quem é você, para onde vai a peça, o que ela precisa carregar.',
+  },
+  {
+    titulo: 'A escuta',
+    texto:
+      'A artista leva o pedido em oração. A proposta que volta para você — forma, tamanho, acabamento — nasce desse tempo de escuta.',
+  },
+  {
+    titulo: 'A criação',
+    texto:
+      'Com a proposta aprovada, a peça é feita à mão: torno ou modelagem, secagem, queima e acabamento. Cerâmica tem tempo próprio — o prazo é combinado com transparência.',
+  },
+  {
+    titulo: 'A entrega',
+    texto:
+      'A peça chega até você com a história que a acompanha. Entregamos em Brasília e enviamos para todo o Brasil.',
+  },
+];
+---
+
+<Base
+  titulo="Encomendas"
+  descricao="Como encomendar uma peça da Yada: cerâmica feita à mão, sob encomenda, a partir de uma conversa."
+>
+  <section class="secao">
+    <div class="contentor texto-medida">
+      <span class="rotulo">Encomendas</span>
+      <h1>Uma peça que nasce para você</h1>
+      <p class="texto-suave intro">
+        A Yada não é uma loja com estoque: é um ateliê. As peças são feitas
+        sob encomenda, uma a uma — e o processo começa sempre por uma
+        conversa, não por um carrinho de compras.
+      </p>
+    </div>
+  </section>
+
+  <section class="secao secao-alt">
+    <div class="contentor">
+      <ol class="etapas">
+        {
+          etapas.map((etapa, i) => (
+            <li class="etapa">
+              <span class="numero">{String(i + 1).padStart(2, '0')}</span>
+              <h2>{etapa.titulo}</h2>
+              <p class="texto-suave">{etapa.texto}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="secao">
+    <div class="contentor centro">
+      <h2>Quer começar essa conversa?</h2>
+      <div class="acoes">
+        <a class="botao botao-cheio" href={marca.whatsapp} target="_blank" rel="noopener">
+          Chamar no WhatsApp
+        </a>
+        <a class="botao" href={marca.instagram} target="_blank" rel="noopener">
+          Instagram {marca.instagramArroba}
+        </a>
+      </div>
+      <p class="texto-suave nota">
+        Prefere e-mail? Escreva para
+        <a href={`mailto:${marca.email}`}>{marca.email}</a> ou veja todos os
+        canais em <a href={caminho('/contato/')}>Contato</a>.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  h1 {
+    margin-top: 0.3rem;
+  }
+
+  .intro {
+    margin-top: 1.2rem;
+    font-size: 1.1rem;
+  }
+
+  .etapas {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2.5rem;
+  }
+
+  .numero {
+    font-family: var(--fonte-titulo);
+    font-size: 2.4rem;
+    color: var(--cor-destaque);
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+
+  .etapa h2 {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .etapa p {
+    font-size: 0.95rem;
+  }
+
+  .centro {
+    text-align: center;
+  }
+
+  .acoes {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nota {
+    margin-top: 1.8rem;
+    font-size: 0.92rem;
+  }
+
+  @media (max-width: 60rem) {
+    .etapas {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .etapas {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,144 @@
+---
+import Marca from './Marca.astro';
+import { navegacao, caminho } from '../data/site';
+
+// caminho atual sem o prefixo do base, para marcar o item ativo
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const atual = Astro.url.pathname.replace(base, '') || '/';
+
+function ativo(rota: string): boolean {
+  if (rota === '/') return atual === '/';
+  return atual.startsWith(rota.replace(/\/$/, ''));
+}
+---
+
+<header class="cabecalho">
+  <div class="contentor barra">
+    <a href={caminho('/')} class="logo" aria-label="Yada — página inicial">
+      <Marca />
+    </a>
+
+    <nav aria-label="Navegação principal">
+      <input type="checkbox" id="menu-aberto" class="menu-caixa" aria-hidden="true" />
+      <label for="menu-aberto" class="menu-botao" aria-hidden="true">
+        <span></span><span></span>
+      </label>
+      <ul class="menu">
+        {
+          navegacao.map((item) => (
+            <li>
+              <a
+                href={caminho(item.caminho)}
+                aria-current={ativo(item.caminho) ? 'page' : undefined}
+              >
+                {item.rotulo}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .cabecalho {
+    background: var(--cor-fundo);
+    border-bottom: 1px solid var(--cor-linha);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .barra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 1rem;
+  }
+
+  .logo {
+    text-decoration: none;
+  }
+
+  .menu {
+    display: flex;
+    gap: 2.2rem;
+    list-style: none;
+  }
+
+  .menu a {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--cor-tinta-suave);
+    padding-block: 0.3rem;
+  }
+
+  .menu a:hover {
+    color: var(--cor-destaque);
+  }
+
+  .menu a[aria-current='page'] {
+    color: var(--cor-tinta);
+    border-bottom: 1px solid var(--cor-destaque);
+  }
+
+  /* menu móvel sem JavaScript (checkbox) */
+  .menu-caixa,
+  .menu-botao {
+    display: none;
+  }
+
+  @media (max-width: 46rem) {
+    .menu-botao {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      padding: 0.6rem 0.2rem;
+    }
+
+    .menu-botao span {
+      width: 26px;
+      height: 2px;
+      background: var(--cor-tinta);
+      transition: transform 0.25s ease;
+    }
+
+    .menu-caixa:checked ~ .menu-botao span:first-child {
+      transform: translateY(4px) rotate(45deg);
+    }
+
+    .menu-caixa:checked ~ .menu-botao span:last-child {
+      transform: translateY(-4px) rotate(-45deg);
+    }
+
+    .menu {
+      display: none;
+      position: absolute;
+      inset-inline: 0;
+      top: 100%;
+      flex-direction: column;
+      gap: 0;
+      background: var(--cor-fundo);
+      border-bottom: 1px solid var(--cor-linha);
+      padding: 0.5rem 1.5rem 1.25rem;
+    }
+
+    .menu li {
+      border-top: 1px solid var(--cor-linha);
+    }
+
+    .menu a {
+      display: block;
+      padding-block: 0.9rem;
+    }
+
+    .menu-caixa:checked ~ .menu {
+      display: flex;
+    }
+  }
+</style>

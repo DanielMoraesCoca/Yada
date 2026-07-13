@@ -1,0 +1,98 @@
+---
+import Base from '../layouts/Base.astro';
+import { caminho } from '../data/site';
+---
+
+<Base
+  titulo="História"
+  descricao="A história da Yada: arte profética em cerâmica, onde cada peça nasce de revelação — feita à mão em Brasília."
+>
+  <section class="secao">
+    <div class="contentor texto-medida">
+      <span class="rotulo">A história</span>
+      <h1>Conhecer de perto</h1>
+
+      <p class="citacao abertura">
+        Yada (יָדַע), no hebraico bíblico, é o verbo conhecer — não o
+        conhecimento de quem ouviu falar, mas o de quem convive, toca e
+        permanece.
+      </p>
+
+      <!--
+        [TEXTO ILUSTRATIVO — substitua pelos textos reais da artista.
+        A estrutura abaixo é uma sugestão de narrativa; edite à vontade.]
+      -->
+
+      <h2>O chamado</h2>
+      <p>
+        <em>[Texto ilustrativo — substituir.]</em> A Yada nasceu de um
+        encontro. Antes de ser marca, foi obediência: a percepção clara de
+        que Jesus queria falar também através do barro — e de que cada peça
+        deveria nascer d’Ele, não de uma tendência ou de um catálogo.
+      </p>
+
+      <h2>Como as peças nascem</h2>
+      <p>
+        <em>[Texto ilustrativo — substituir.]</em> O processo começa em
+        oração. É Ele quem mostra <strong>o que</strong> criar,
+        <strong>por que</strong> criar e <strong>como</strong> criar. Só
+        então a artista vai ao torno ou à modelagem — e o barro passa pelas
+        mãos até se tornar aquilo que já tinha sido visto.
+      </p>
+      <p>
+        Por isso chamamos de arte profética: cada escultura, cada utensílio
+        de mesa e cada objeto carrega uma palavra que veio antes da forma.
+      </p>
+
+      <h2>Feito à mão em Brasília</h2>
+      <p>
+        <em>[Texto ilustrativo — substituir.]</em> Todo o trabalho é feito à
+        mão em Brasília — do preparo da argila à queima. Nenhuma peça é
+        idêntica à outra, porque nenhuma palavra é dita duas vezes do mesmo
+        jeito.
+      </p>
+
+      <h2>Os três pilares</h2>
+      <p>
+        <strong>Contemplar a escultura.</strong> Peças para parar diante
+        delas e reconhecer o Autor por trás da obra.
+      </p>
+      <p>
+        <strong>Comungar à mesa.</strong> Utilitários para o lugar do
+        encontro — o pão repartido, a água servida, a conversa demorada.
+      </p>
+      <p>
+        <strong>Habitar o ambiente.</strong> Objetos que fazem da casa uma
+        morada, com presença no cotidiano.
+      </p>
+
+      <div class="acoes">
+        <a class="botao botao-cheio" href={caminho('/galeria/')}>Ver as peças</a>
+        <a class="botao" href={caminho('/contato/')}>Falar com a Yada</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  h1 {
+    margin-bottom: 1.5rem;
+  }
+
+  .abertura {
+    margin-block: 1.5rem 2.5rem;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 3vw, 1.9rem);
+    margin-top: 2.75rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .acoes {
+    margin-top: 3rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+</style>

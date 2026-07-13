@@ -1,0 +1,19 @@
+{
+  "name": "yada",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site institucional da Yada — arte em cerâmica, feita à mão em Brasília",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.4.1",
+    "@fontsource/cormorant-garamond": "^5.2.5",
+    "@fontsource/karla": "^5.2.5",
+    "astro": "^5.12.0"
+  }
+}

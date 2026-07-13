@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://danielmoraescoca.github.io/Yada/sitemap-index.xml

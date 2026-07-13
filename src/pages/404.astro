@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import { caminho } from '../data/site';
+---
+
+<Base titulo="Página não encontrada" descricao="Esta página não existe.">
+  <section class="secao">
+    <div class="contentor centro">
+      <span class="rotulo">Erro 404</span>
+      <h1>Esta página ainda não tomou forma</h1>
+      <p class="texto-suave">
+        Como o barro no torno, alguns caminhos precisam ser refeitos.
+      </p>
+      <div class="acoes">
+        <a class="botao botao-cheio" href={caminho('/')}>Voltar ao início</a>
+        <a class="botao" href={caminho('/galeria/')}>Ver a galeria</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .centro {
+    text-align: center;
+    padding-block: clamp(2rem, 8vw, 5rem);
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin-top: 0.3rem;
+  }
+
+  p {
+    margin-top: 1rem;
+  }
+
+  .acoes {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+</style>
