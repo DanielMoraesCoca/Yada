@@ -1,6 +1,6 @@
 # Yada — Site institucional
 
-Site da **Yada**, arte profética em cerâmica feita à mão em Brasília.
+Site da **Yada**, arte profética em cerâmica feita à mão.
 O site não é uma loja: apresenta a criadora, o propósito, as peças e os
 canais de contato (incluindo encomendas).
 

@@ -6,10 +6,10 @@
 export const marca = {
   nome: 'Yada',
   slogan: 'Arte em cerâmica',
+  lema: 'Conhecer de perto',
   descricao:
-    'Yada é arte profética em cerâmica, feita à mão em Brasília. ' +
-    'Contemplar a escultura, comungar à mesa, habitar o ambiente.',
-  cidade: 'Brasília — DF, Brasil',
+    'Yada é arte profética em cerâmica, feita à mão. ' +
+    'Peças que nascem de revelação — um convite a conhecer de perto.',
 
   instagram: 'https://www.instagram.com/yada.arte',
   instagramArroba: '@yada.arte',
