@@ -24,6 +24,26 @@ const etapas = [
       'A peça chega até você com a história que a acompanha. Enviamos para todo o Brasil.',
   },
 ];
+
+// [Respostas ilustrativas — confirmar/ajustar com a artista]
+const perguntas = [
+  {
+    p: 'Quanto tempo leva uma encomenda?',
+    r: 'A cerâmica tem tempo próprio: modelagem, secagem lenta, queima e acabamento. Em geral, uma peça leva algumas semanas — o prazo exato é combinado na conversa inicial, com transparência. [confirmar prazo típico]',
+  },
+  {
+    p: 'Como funcionam os valores?',
+    r: 'Cada peça é única, então o valor depende do tamanho, da complexidade e do acabamento. Após a conversa e a proposta, você recebe o valor antes de qualquer compromisso. [confirmar política de preços]',
+  },
+  {
+    p: 'Vocês enviam para fora da cidade?',
+    r: 'Sim — enviamos para todo o Brasil, com embalagem reforçada própria para cerâmica. O frete é calculado junto com a proposta. [confirmar transportadoras/embalagem]',
+  },
+  {
+    p: 'Como cuidar da minha peça?',
+    r: 'Peças utilitárias recebem esmalte alimentar seguro e podem ser lavadas à mão com esponja macia. Evite choques térmicos (do fogo direto ao gelo) e quedas — barro é forte, mas não é infinito. [confirmar instruções específicas]',
+  },
+];
 ---
 
 <Base
@@ -47,7 +67,7 @@ const etapas = [
       <ol class="etapas">
         {
           etapas.map((etapa, i) => (
-            <li class="etapa">
+            <li class="etapa revela">
               <span class="numero">{String(i + 1).padStart(2, '0')}</span>
               <h2>{etapa.titulo}</h2>
               <p class="texto-suave">{etapa.texto}</p>
@@ -59,6 +79,23 @@ const etapas = [
   </section>
 
   <section class="secao">
+    <div class="contentor texto-medida">
+      <span class="rotulo revela">Dúvidas comuns</span>
+      <h2 class="revela">Perguntas frequentes</h2>
+      <div class="faq">
+        {
+          perguntas.map((item) => (
+            <details class="pergunta revela">
+              <summary>{item.p}</summary>
+              <p class="texto-suave">{item.r}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="secao secao-alt">
     <div class="contentor centro">
       <h2>Quer começar essa conversa?</h2>
       <div class="acoes">
@@ -110,6 +147,54 @@ const etapas = [
 
   .etapa p {
     font-size: 0.95rem;
+  }
+
+  .faq {
+    margin-top: 2rem;
+    border-top: 1px solid var(--cor-linha);
+  }
+
+  .pergunta {
+    border-bottom: 1px solid var(--cor-linha);
+  }
+
+  .pergunta summary {
+    cursor: pointer;
+    list-style: none;
+    padding-block: 1.1rem;
+    font-family: var(--fonte-titulo);
+    font-size: 1.25rem;
+    font-weight: 500;
+    position: relative;
+    padding-right: 2rem;
+  }
+
+  .pergunta summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .pergunta summary::after {
+    content: '+';
+    position: absolute;
+    right: 0.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.4rem;
+    color: var(--cor-destaque);
+    transition: transform 0.25s ease;
+  }
+
+  .pergunta[open] summary::after {
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  .pergunta summary:hover {
+    color: var(--cor-destaque);
+  }
+
+  .pergunta p {
+    padding-bottom: 1.2rem;
+    font-size: 0.97rem;
   }
 
   .centro {

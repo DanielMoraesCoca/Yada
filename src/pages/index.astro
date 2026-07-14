@@ -10,11 +10,21 @@ const destaques = pecas
   .filter((p) => p.data.destaque)
   .sort((a, b) => b.data.data.valueOf() - a.data.data.valueOf())
   .slice(0, 3);
+
+const esquema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: marca.nome,
+  description: marca.descricao,
+  url: Astro.site ? new URL(import.meta.env.BASE_URL, Astro.site).toString() : undefined,
+  email: marca.email,
+  sameAs: [marca.instagram],
+};
 ---
 
-<Base titulo={marca.nome}>
+<Base titulo={marca.nome} esquema={esquema}>
   <!-- Abertura -->
-  <section class="secao heroi">
+  <section class="secao heroi atmosfera">
     <div class="contentor centro">
       <Marca tamanho="grande" />
       <p class="citacao lema">{marca.lema}</p>
@@ -31,12 +41,12 @@ const destaques = pecas
   <!-- Os três pilares -->
   <section class="secao secao-alt">
     <div class="contentor">
-      <span class="rotulo">O que fazemos</span>
-      <h2>Três formas de conhecer</h2>
+      <span class="rotulo revela">O que fazemos</span>
+      <h2 class="revela">Três formas de conhecer</h2>
       <div class="pilares">
         {
           pilares.map((pilar) => (
-            <article class="pilar">
+            <article class="pilar revela">
               <h3>{pilar.titulo}</h3>
               <p class="texto-suave">{pilar.texto}</p>
             </article>
@@ -49,7 +59,7 @@ const destaques = pecas
   <!-- Peças em destaque -->
   <section class="secao">
     <div class="contentor">
-      <div class="cabeca-galeria">
+      <div class="cabeca-galeria revela">
         <div>
           <span class="rotulo">Peças</span>
           <h2>Em destaque</h2>
@@ -57,7 +67,13 @@ const destaques = pecas
         <a class="ver-todas" href={caminho('/galeria/')}>Ver todas →</a>
       </div>
       <div class="grade-pecas">
-        {destaques.map((peca) => <CartaoPeca peca={peca} />)}
+        {
+          destaques.map((peca) => (
+            <div class="revela">
+              <CartaoPeca peca={peca} />
+            </div>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -65,12 +81,29 @@ const destaques = pecas
   <!-- Convite -->
   <section class="secao secao-alt">
     <div class="contentor centro">
-      <p class="citacao texto-medida convite-texto">
+      <p class="citacao texto-medida convite-texto revela">
         “Yada”, no hebraico, é conhecer de perto — não de ouvir falar,
         mas de conviver. Cada peça é um convite a esse conhecer.
       </p>
-      <div class="acoes">
+      <div class="acoes revela">
         <a class="botao" href={caminho('/encomendas/')}>Fazer uma encomenda</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Instagram -->
+  <section class="secao instagram atmosfera">
+    <div class="contentor centro">
+      <span class="rotulo revela">Acompanhe de perto</span>
+      <h2 class="revela">O ateliê no Instagram</h2>
+      <p class="texto-suave texto-medida insta-texto revela">
+        Peças em produção, bastidores do torno e cada nova criação —
+        primeiro por lá.
+      </p>
+      <div class="acoes revela">
+        <a class="botao botao-cheio" href={marca.instagram} target="_blank" rel="noopener">
+          Seguir {marca.instagramArroba}
+        </a>
       </div>
     </div>
   </section>
@@ -78,7 +111,7 @@ const destaques = pecas
 
 <style>
   .heroi {
-    padding-block: clamp(5rem, 12vw, 9rem);
+    padding-block: clamp(5.5rem, 13vw, 10rem);
   }
 
   .centro {
@@ -148,6 +181,10 @@ const destaques = pecas
 
   .convite-texto {
     margin-inline: auto;
+  }
+
+  .insta-texto {
+    margin-top: 0.9rem;
   }
 
   @media (max-width: 46rem) {
