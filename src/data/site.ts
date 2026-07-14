@@ -6,16 +6,15 @@
 export const marca = {
   nome: 'Yada',
   slogan: 'Arte em cerâmica',
+  lema: 'Conhecer de perto',
   descricao:
-    'Yada é arte profética em cerâmica, feita à mão em Brasília. ' +
-    'Contemplar a escultura, comungar à mesa, habitar o ambiente.',
-  cidade: 'Brasília — DF, Brasil',
+    'Yada é arte profética em cerâmica, feita à mão. ' +
+    'Peças que nascem de revelação — um convite a conhecer de perto.',
 
-  // TODO: confirme o @ do Instagram e os contatos reais antes do lançamento
-  instagram: 'https://www.instagram.com/yada.ceramica',
-  instagramArroba: '@yada.ceramica',
-  whatsapp: 'https://wa.me/5561900000000', // TODO: número real com DDI+DDD
-  email: 'contato@yada.art.br', // TODO: e-mail real
+  instagram: 'https://www.instagram.com/yada.arte',
+  instagramArroba: '@yada.arte',
+  whatsapp: 'https://wa.me/5561996799111',
+  email: 'yadaarte@gmail.com',
 };
 
 /** Os três pilares da marca (bio do Instagram) */

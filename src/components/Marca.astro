@@ -1,8 +1,12 @@
 ---
 /**
- * Marca gráfica da Yada: palavra "YADA" + laço infinito.
- * Substituir pelo logotipo oficial quando o arquivo vetorial estiver disponível.
+ * Marca gráfica da Yada, recriada em código a partir do logotipo oficial:
+ * "YADA" em serifa com os "A" sem travessão (renderizados como Λ) e o
+ * laço infinito em fita desenhada à mão. Quando o arquivo vetorial
+ * oficial estiver disponível, basta substituir este componente.
  */
+import { lacoPath } from '../data/laco';
+
 interface Props {
   tamanho?: 'normal' | 'grande';
 }
@@ -10,19 +14,10 @@ const { tamanho = 'normal' } = Astro.props;
 ---
 
 <span class:list={['marca', tamanho]}>
-  <span class="palavra">YADA</span>
-  <svg
-    class="laco"
-    viewBox="0 0 64 24"
-    fill="none"
-    aria-hidden="true"
-  >
-    <path
-      d="M32 12 C 27 3, 11 3, 11 12 C 11 21, 27 21, 32 12 C 37 3, 53 3, 53 12 C 53 21, 37 21, 32 12"
-      stroke="currentColor"
-      stroke-width="2.4"
-      stroke-linecap="round"
-    ></path>
+  <span class="palavra" aria-hidden="true">Y&Lambda;D&Lambda;</span>
+  <span class="leitura">YADA</span>
+  <svg class="laco" viewBox="0 0 128 52" aria-hidden="true">
+    <path d={lacoPath} fill="currentColor"></path>
   </svg>
 </span>
 
@@ -31,7 +26,7 @@ const { tamanho = 'normal' } = Astro.props;
     display: inline-flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.05em;
+    gap: 0.12em;
     color: inherit;
     line-height: 1;
   }
@@ -39,14 +34,24 @@ const { tamanho = 'normal' } = Astro.props;
   .palavra {
     font-family: var(--fonte-titulo);
     font-weight: 600;
-    letter-spacing: 0.24em;
-    text-indent: 0.24em; /* compensa o letter-spacing do último caractere */
+    letter-spacing: 0.14em;
+    text-indent: 0.14em; /* compensa o letter-spacing do último caractere */
     font-size: 1.5rem;
   }
 
+  /* texto real para leitores de tela e cópia (o Λ é só visual) */
+  .leitura {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
   .laco {
-    width: 2.2em;
-    opacity: 0.85;
+    width: 2.6em;
+    opacity: 0.92;
   }
 
   .grande .palavra {
@@ -54,6 +59,6 @@ const { tamanho = 'normal' } = Astro.props;
   }
 
   .grande .laco {
-    width: 3em;
+    width: 3.2em;
   }
 </style>
