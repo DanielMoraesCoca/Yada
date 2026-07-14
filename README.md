@@ -22,8 +22,8 @@ Publicado automaticamente no GitHub Pages:
 ### Textos da marca, contatos e redes sociais
 
 Tudo em um só lugar: [`src/data/site.ts`](src/data/site.ts).
-Lá estão o Instagram, o WhatsApp, o e-mail, o slogan e os três pilares.
-**Antes do lançamento, troque os contatos marcados com `TODO`.**
+Lá estão o Instagram (@yada.arte), o WhatsApp, o e-mail, o slogan e os
+três pilares.
 
 ### Adicionar uma peça à galeria
 
@@ -71,9 +71,10 @@ Edite ou apague o arquivo `.md` correspondente em `src/content/pecas/`.
 
 ### Logotipo
 
-A marca no cabeçalho é desenhada em código (`src/components/Marca.astro`).
-Quando tiver o arquivo vetorial oficial do logotipo, substitua o conteúdo
-desse componente. O ícone da aba do navegador é `public/favicon.svg`.
+A marca no cabeçalho é uma recriação fiel do logotipo oficial, desenhada
+em código (`src/components/Marca.astro` + `src/data/laco.ts`). Se um dia
+quiser usar o arquivo vetorial original, substitua o conteúdo desse
+componente. O ícone da aba do navegador é `public/favicon.svg`.
 
 ## Rodando localmente
 
