@@ -6,6 +6,10 @@ import '@fontsource/karla/400.css';
 import '@fontsource/karla/600.css';
 import '../styles/global.css';
 
+import { ClientRouter } from 'astro:transitions';
+import cormorantUrl from '@fontsource/cormorant-garamond/files/cormorant-garamond-latin-500-normal.woff2?url';
+import karlaUrl from '@fontsource/karla/files/karla-latin-400-normal.woff2?url';
+
 import Cabecalho from '../components/Cabecalho.astro';
 import Rodape from '../components/Rodape.astro';
 import { marca } from '../data/site';
@@ -13,12 +17,23 @@ import { marca } from '../data/site';
 interface Props {
   titulo: string;
   descricao?: string;
+  /** Caminho absoluto (com base) de uma imagem para redes sociais */
+  imagemSocial?: string;
+  /** JSON-LD adicional da página */
+  esquema?: Record<string, unknown>;
 }
 
-const { titulo, descricao = marca.descricao } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const {
+  titulo,
+  descricao = marca.descricao,
+  imagemSocial = `${base}/og.png`,
+  esquema,
+} = Astro.props;
 const tituloCompleto =
   titulo === marca.nome ? `${marca.nome} — ${marca.slogan}` : `${titulo} · ${marca.nome}`;
 const canonica = new URL(Astro.url.pathname, Astro.site);
+const imagemSocialAbs = new URL(imagemSocial, Astro.site);
 ---
 
 <!doctype html>
@@ -28,21 +43,34 @@ const canonica = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{tituloCompleto}</title>
     <meta name="description" content={descricao} />
+    <meta name="theme-color" content="#f6f1e7" />
     <link rel="canonical" href={canonica} />
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/favicon.svg`} />
-    <link rel="sitemap" href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/sitemap-index.xml`} />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <link rel="sitemap" href={`${base}/sitemap-index.xml`} />
+    <link rel="preload" as="font" type="font/woff2" href={cormorantUrl} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={karlaUrl} crossorigin />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={marca.nome} />
     <meta property="og:title" content={tituloCompleto} />
     <meta property="og:description" content={descricao} />
     <meta property="og:url" content={canonica} />
+    <meta property="og:image" content={imagemSocialAbs} />
     <meta property="og:locale" content="pt_BR" />
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={imagemSocialAbs} />
 
     <meta name="generator" content={Astro.generator} />
+
+    {esquema && <script type="application/ld+json" set:html={JSON.stringify(esquema)} />}
+
+    <!-- marca a presença de JS antes da pintura, para as animações de revelação -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
+
+    <ClientRouter />
   </head>
   <body>
+    <a class="pular" href="#conteudo">Ir para o conteúdo</a>
     <Cabecalho />
     <main id="conteudo">
       <slot />
@@ -51,10 +79,58 @@ const canonica = new URL(Astro.url.pathname, Astro.site);
   </body>
 </html>
 
+<script>
+  // Revelação suave dos elementos .revela ao entrarem na tela.
+  function iniciarRevelacao() {
+    const alvos = document.querySelectorAll<HTMLElement>('.revela:not(.visivel)');
+    if (!alvos.length) return;
+
+    const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (semMovimento || !('IntersectionObserver' in window)) {
+      alvos.forEach((el) => el.classList.add('visivel'));
+      return;
+    }
+
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        for (const entrada of entradas) {
+          if (entrada.isIntersecting) {
+            entrada.target.classList.add('visivel');
+            observador.unobserve(entrada.target);
+          }
+        }
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }
+    );
+
+    alvos.forEach((el) => observador.observe(el));
+  }
+
+  document.addEventListener('astro:page-load', iniciarRevelacao);
+</script>
+
 <style>
   body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+  }
+
+  .pular {
+    position: absolute;
+    left: 1rem;
+    top: -3.5rem;
+    z-index: 100;
+    background: var(--cor-tinta);
+    color: var(--cor-fundo);
+    padding: 0.7rem 1.2rem;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: top 0.2s ease;
+  }
+
+  .pular:focus-visible {
+    top: 1rem;
+    color: var(--cor-fundo);
   }
 </style>

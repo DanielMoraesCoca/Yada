@@ -1,6 +1,6 @@
 ---
 import Marca from './Marca.astro';
-import { navegacao, caminho } from '../data/site';
+import { marca, navegacao, caminho } from '../data/site';
 
 // caminho atual sem o prefixo do base, para marcar o item ativo
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -36,6 +36,14 @@ function ativo(rota: string): boolean {
             </li>
           ))
         }
+        <li class="acao">
+          <a class="pilula" href={marca.whatsapp} target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+              <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.4-3c-.3-.4 0-.5.2-.7l.4-.5c.1-.2.2-.3.3-.5v-.5c0-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s1 2.5 1.1 2.7c.1.2 1.9 3 4.7 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2l-.4-.3Z"/>
+            </svg>
+            Encomendar
+          </a>
+        </li>
       </ul>
     </nav>
   </div>
@@ -43,7 +51,9 @@ function ativo(rota: string): boolean {
 
 <style>
   .cabecalho {
-    background: var(--cor-fundo);
+    background: color-mix(in srgb, var(--cor-fundo) 82%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--cor-linha);
     position: sticky;
     top: 0;
@@ -54,7 +64,7 @@ function ativo(rota: string): boolean {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-block: 1rem;
+    padding-block: 0.85rem;
   }
 
   .logo {
@@ -63,7 +73,8 @@ function ativo(rota: string): boolean {
 
   .menu {
     display: flex;
-    gap: 2.2rem;
+    align-items: center;
+    gap: 2rem;
     list-style: none;
   }
 
@@ -86,13 +97,29 @@ function ativo(rota: string): boolean {
     border-bottom: 1px solid var(--cor-destaque);
   }
 
+  .pilula {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border: 1px solid var(--cor-tinta);
+    border-radius: 99px;
+    padding: 0.5rem 1.1rem !important;
+    color: var(--cor-tinta) !important;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+
+  .pilula:hover {
+    background: var(--cor-tinta);
+    color: var(--cor-fundo) !important;
+  }
+
   /* menu móvel sem JavaScript (checkbox) */
   .menu-caixa,
   .menu-botao {
     display: none;
   }
 
-  @media (max-width: 46rem) {
+  @media (max-width: 52rem) {
     .menu-botao {
       display: flex;
       flex-direction: column;
@@ -122,6 +149,7 @@ function ativo(rota: string): boolean {
       inset-inline: 0;
       top: 100%;
       flex-direction: column;
+      align-items: stretch;
       gap: 0;
       background: var(--cor-fundo);
       border-bottom: 1px solid var(--cor-linha);
@@ -135,6 +163,16 @@ function ativo(rota: string): boolean {
     .menu a {
       display: block;
       padding-block: 0.9rem;
+    }
+
+    .menu .acao {
+      border-top: none;
+      padding-top: 0.9rem;
+    }
+
+    .pilula {
+      display: inline-flex;
+      justify-content: center;
     }
 
     .menu-caixa:checked ~ .menu {

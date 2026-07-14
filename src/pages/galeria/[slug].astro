@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
+import CartaoPeca from '../../components/CartaoPeca.astro';
 import { pilares, marca, caminho } from '../../data/site';
 
 export async function getStaticPaths() {
@@ -19,12 +20,40 @@ const dataFormatada = peca.data.data.toLocaleDateString('pt-BR', {
   month: 'long',
   year: 'numeric',
 });
+
+// outras peças: mesma categoria primeiro, depois as demais (até 3)
+const todas = (await getCollection('pecas')).filter((p) => p.id !== peca.id);
+const relacionadas = [
+  ...todas.filter((p) => p.data.categoria === peca.data.categoria),
+  ...todas.filter((p) => p.data.categoria !== peca.data.categoria),
+].slice(0, 3);
+
+const whatsappPeca = `${marca.whatsapp}?text=${encodeURIComponent(
+  `Olá! Vi a peça "${peca.data.titulo}" no site da Yada e gostaria de saber mais.`
+)}`;
+
+const esquema = {
+  '@context': 'https://schema.org',
+  '@type': 'VisualArtwork',
+  name: peca.data.titulo,
+  description: peca.data.descricao,
+  artform: 'Cerâmica',
+  artMedium: 'Argila',
+  ...(peca.data.tecnica ? { artworkSurface: peca.data.tecnica } : {}),
+  creator: { '@type': 'Organization', name: marca.nome },
+};
 ---
 
-<Base titulo={peca.data.titulo} descricao={peca.data.descricao}>
+<Base titulo={peca.data.titulo} descricao={peca.data.descricao} esquema={esquema}>
   <section class="secao">
     <div class="contentor">
-      <a class="voltar" href={caminho('/galeria/')}>← Voltar à galeria</a>
+      <nav class="migalhas" aria-label="Você está em">
+        <a href={caminho('/galeria/')}>Galeria</a>
+        <span aria-hidden="true">/</span>
+        <a href={caminho(`/galeria/#${peca.data.categoria}`)}>{pilar?.curto}</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{peca.data.titulo}</span>
+      </nav>
 
       <div class="peca">
         <div class="imagens">
@@ -65,27 +94,59 @@ const dataFormatada = peca.data.data.toLocaleDateString('pt-BR', {
           </div>
 
           <div class="acoes">
-            <a class="botao botao-cheio" href={marca.whatsapp} target="_blank" rel="noopener">
+            <a class="botao botao-cheio" href={whatsappPeca} target="_blank" rel="noopener">
               Perguntar sobre esta peça
             </a>
             <a class="botao" href={caminho('/encomendas/')}>Como encomendar</a>
           </div>
         </div>
       </div>
+
+      {
+        relacionadas.length > 0 && (
+          <aside class="outras">
+            <h2 class="revela">Outras peças</h2>
+            <div class="grade-outras">
+              {relacionadas.map((outra) => (
+                <div class="revela">
+                  <CartaoPeca peca={outra} />
+                </div>
+              ))}
+            </div>
+          </aside>
+        )
+      }
     </div>
   </section>
 </Base>
 
 <style>
-  .voltar {
-    display: inline-block;
+  .migalhas {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
     font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
+    letter-spacing: 0.06em;
     color: var(--cor-tinta-suave);
     margin-bottom: 2.2rem;
+  }
+
+  .migalhas a {
+    text-decoration: none;
+    color: var(--cor-tinta-suave);
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+  }
+
+  .migalhas a:hover {
+    color: var(--cor-destaque);
+  }
+
+  .migalhas span[aria-current] {
+    font-weight: 600;
+    color: var(--cor-tinta);
   }
 
   .peca {
@@ -155,8 +216,28 @@ const dataFormatada = peca.data.data.toLocaleDateString('pt-BR', {
     flex-wrap: wrap;
   }
 
+  .outras {
+    margin-top: var(--espaco-secao);
+    padding-top: 3rem;
+    border-top: 1px solid var(--cor-linha);
+  }
+
+  .outras h2 {
+    margin-bottom: 2rem;
+  }
+
+  .grade-outras {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem 1.75rem;
+  }
+
   @media (max-width: 52rem) {
     .peca {
+      grid-template-columns: 1fr;
+    }
+
+    .grade-outras {
       grid-template-columns: 1fr;
     }
   }

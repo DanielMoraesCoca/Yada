@@ -7,6 +7,8 @@ import { pilares } from '../../data/site';
 const pecas = (await getCollection('pecas')).sort(
   (a, b) => b.data.data.valueOf() - a.data.data.valueOf()
 );
+
+const contagem = (id: string) => pecas.filter((p) => p.data.categoria === id).length;
 ---
 
 <Base
@@ -23,38 +25,78 @@ const pecas = (await getCollection('pecas')).sort(
       </p>
 
       <div class="filtros" role="group" aria-label="Filtrar por categoria">
-        <button class="filtro ativo" data-filtro="todas">Todas</button>
+        <button class="filtro" data-filtro="todas" aria-pressed="true">
+          Todas <span class="conta">{pecas.length}</span>
+        </button>
         {
           pilares.map((pilar) => (
-            <button class="filtro" data-filtro={pilar.id}>
-              {pilar.curto}
+            <button class="filtro" data-filtro={pilar.id} aria-pressed="false">
+              {pilar.curto} <span class="conta">{contagem(pilar.id)}</span>
             </button>
           ))
         }
       </div>
 
       <div class="grade-pecas">
-        {pecas.map((peca) => <CartaoPeca peca={peca} />)}
+        {
+          pecas.map((peca) => (
+            <div class="revela">
+              <CartaoPeca peca={peca} />
+            </div>
+          ))
+        }
       </div>
+
+      <p class="vazio texto-suave" hidden>
+        Nenhuma peça nesta categoria por enquanto — novas criações estão a
+        caminho.
+      </p>
     </div>
   </section>
 </Base>
 
 <script>
-  // Filtro simples por categoria — sem JS, todas as peças ficam visíveis.
-  const botoes = document.querySelectorAll<HTMLButtonElement>('.filtro');
-  const cartoes = document.querySelectorAll<HTMLElement>('[data-categoria]');
+  // Filtro por categoria, refletido no #hash da URL (compartilhável e com
+  // botão voltar). Sem JS, todas as peças ficam visíveis.
+  function iniciarFiltros() {
+    const botoes = document.querySelectorAll<HTMLButtonElement>('.filtro');
+    if (!botoes.length) return;
+    const cartoes = document.querySelectorAll<HTMLElement>('[data-categoria]');
+    const vazio = document.querySelector<HTMLElement>('.vazio');
 
-  botoes.forEach((botao) => {
-    botao.addEventListener('click', () => {
-      const filtro = botao.dataset.filtro;
-      botoes.forEach((b) => b.classList.toggle('ativo', b === botao));
+    function aplicar(filtro: string) {
+      let visiveis = 0;
+      botoes.forEach((b) =>
+        b.setAttribute('aria-pressed', String(b.dataset.filtro === filtro))
+      );
       cartoes.forEach((cartao) => {
         const mostrar = filtro === 'todas' || cartao.dataset.categoria === filtro;
-        cartao.style.display = mostrar ? '' : 'none';
+        const bloco = cartao.closest<HTMLElement>('.revela') ?? cartao;
+        bloco.style.display = mostrar ? '' : 'none';
+        if (mostrar) visiveis++;
+      });
+      if (vazio) vazio.hidden = visiveis > 0;
+    }
+
+    function doHash() {
+      const alvo = location.hash.replace('#', '');
+      const valido = Array.from(botoes).some((b) => b.dataset.filtro === alvo);
+      aplicar(valido ? alvo : 'todas');
+    }
+
+    botoes.forEach((botao) => {
+      botao.addEventListener('click', () => {
+        const filtro = botao.dataset.filtro ?? 'todas';
+        history.replaceState(null, '', filtro === 'todas' ? '#' : `#${filtro}`);
+        aplicar(filtro);
       });
     });
-  });
+
+    window.addEventListener('hashchange', doHash);
+    doHash();
+  }
+
+  document.addEventListener('astro:page-load', iniciarFiltros);
 </script>
 
 <style>
@@ -89,16 +131,27 @@ const pecas = (await getCollection('pecas')).sort(
     color: var(--cor-tinta);
   }
 
-  .filtro.ativo {
+  .filtro[aria-pressed='true'] {
     background: var(--cor-tinta);
     border-color: var(--cor-tinta);
     color: var(--cor-fundo);
+  }
+
+  .conta {
+    opacity: 0.55;
+    margin-left: 0.2rem;
+    font-variant-numeric: tabular-nums;
   }
 
   .grade-pecas {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem 1.75rem;
+  }
+
+  .vazio {
+    margin-top: 2rem;
+    font-style: italic;
   }
 
   @media (max-width: 46rem) {
