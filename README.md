@@ -75,7 +75,8 @@ fotos reais:
 1. No GitHub, abra a pasta `src/assets/pecas/` e use
    **Add file → Upload files** com estes nomes exatos:
    `o-justo-juiz.jpg`, `introspeccao.jpg`, `as-tres-gracas.jpg`,
-   `novo-nascimento.jpg`, `o-lembrete.jpg`
+   `novo-nascimento.jpg`, `trofeu-de-lembranca.jpg`, `a-promessa.jpg`,
+   `nascido-do-espirito.jpg`, `santidade.jpg`, `estudo-1.jpg`
 2. Em cada arquivo de `src/content/pecas/`, troque a linha `imagens:`
    para apontar para a foto (ex.:
    `'../../assets/pecas/o-justo-juiz.jpg'`).
