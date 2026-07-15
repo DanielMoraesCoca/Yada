@@ -9,6 +9,10 @@ const pecas = (await getCollection('pecas')).sort(
 );
 
 const contagem = (id: string) => pecas.filter((p) => p.data.categoria === id).length;
+
+// só exibe filtros de categorias que têm peças (e só se houver mais de uma)
+const pilaresComPecas = pilares.filter((pilar) => contagem(pilar.id) > 0);
+const mostrarFiltros = pilaresComPecas.length > 1;
 ---
 
 <Base
@@ -24,18 +28,20 @@ const contagem = (id: string) => pecas.filter((p) => p.data.categoria === id).le
         queima. Toque em uma peça para conhecer a história por trás dela.
       </p>
 
-      <div class="filtros" role="group" aria-label="Filtrar por categoria">
-        <button class="filtro" data-filtro="todas" aria-pressed="true">
-          Todas <span class="conta">{pecas.length}</span>
-        </button>
-        {
-          pilares.map((pilar) => (
-            <button class="filtro" data-filtro={pilar.id} aria-pressed="false">
-              {pilar.curto} <span class="conta">{contagem(pilar.id)}</span>
+      {
+        mostrarFiltros && (
+          <div class="filtros" role="group" aria-label="Filtrar por categoria">
+            <button class="filtro" data-filtro="todas" aria-pressed="true">
+              Todas <span class="conta">{pecas.length}</span>
             </button>
-          ))
-        }
-      </div>
+            {pilaresComPecas.map((pilar) => (
+              <button class="filtro" data-filtro={pilar.id} aria-pressed="false">
+                {pilar.curto} <span class="conta">{contagem(pilar.id)}</span>
+              </button>
+            ))}
+          </div>
+        )
+      }
 
       <div class="grade-pecas">
         {

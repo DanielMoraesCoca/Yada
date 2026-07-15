@@ -64,10 +64,21 @@ Edite ou apague o arquivo `.md` correspondente em `src/content/pecas/`.
 | Encomendas | `src/pages/encomendas.astro` |
 | Contato | `src/pages/contato.astro` |
 
-> Os trechos marcados com `[texto ilustrativo — substituir]` são
-> provisórios e devem ser trocados pelos textos reais da artista. As
-> imagens em `src/assets/pecas/*.svg` também são ilustrativas — substitua
-> por fotos reais das peças.
+> Os trechos marcados com `[texto ilustrativo — substituir]` ou `TODO`
+> são provisórios e devem ser confirmados pela artista.
+
+### Enviar as fotos reais das peças
+
+As peças atuais usam uma imagem "fotografia em breve". Para colocar as
+fotos reais:
+
+1. No GitHub, abra a pasta `src/assets/pecas/` e use
+   **Add file → Upload files** com estes nomes exatos:
+   `o-justo-juiz.jpg`, `introspeccao.jpg`, `as-tres-gracas.jpg`,
+   `novo-nascimento.jpg`, `o-lembrete.jpg`
+2. Em cada arquivo de `src/content/pecas/`, troque a linha `imagens:`
+   para apontar para a foto (ex.:
+   `'../../assets/pecas/o-justo-juiz.jpg'`).
 
 ### Logotipo
 
